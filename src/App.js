@@ -1,21 +1,21 @@
 import React from 'react';
+import { MultiSelect } from './multiSelect';
+
+const DATA = ['A', 'B', 'C']
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <MultiSelect
+        data={DATA}
+        defaultData={[DATA[0], DATA[1]]}
+        element={() => 'Hello'}
+        selectedElement={() => 'Hello1'}
+        searchKey="label"
+        maxValues={1}
+        showCross
+        onChange={(data) => { console.log(data); }}
+      />
     </div>
   );
 }
