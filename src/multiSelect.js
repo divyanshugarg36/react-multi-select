@@ -74,7 +74,6 @@ export class MultiSelect extends Component {
     let position;
     const bottomSpace = (top + height - innerHeight) * -1;
     position = (bottomSpace > 150) ? { top: "calc(100% + 1px)" } : { bottom: "calc(100% + 1px)" };
-    console.log(bottomSpace);
     this.setState({ position });
   }
 
