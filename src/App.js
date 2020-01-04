@@ -2,13 +2,13 @@ import React from 'react';
 import { MultiSelect } from './multiSelect';
 
 const DATA = [
-  { name: 'Fish' },
-  { name: 'Apple' },
-  { name: 'Ball' },
-  { name: 'Ellephant' },
-  { name: 'Cat' },
-  { name: 'Balled' },
-  { name: 'Dog' },
+  { name: 'Fish', values: 'fish' },
+  { name: 'Apple', values: 'apple' },
+  { name: 'Ball', values: 'ball' },
+  { name: 'Ellephant', values: 'ellephant' },
+  { name: 'Cat', values: 'cat' },
+  { name: 'Balled', values: 'balled' },
+  { name: 'Dog', values: 'dog' },
 ]
 
 class App extends React.Component {
@@ -34,7 +34,7 @@ class App extends React.Component {
           // defaultData={[DATA[0], DATA[1]]}
           element={(str) => `${str.name}.`}
           selectedElement={(str) => `${str.name}.`}
-          searchKey="name"
+          searchKey="values"
           // maxValues={1}
           showCross
           onChange={(data) => { console.log(data); }}

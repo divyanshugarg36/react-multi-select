@@ -1,22 +1,29 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { isEqual } from 'lodash';
+import { isEqual, keys } from 'lodash';
 import { ArrowDown, CloseIcon } from './icons';
 
 export class MultiSelect extends Component {
   constructor(props) {
-    super();
-    const { data, defaultData: selected } = props;
+    super(props);
+    this.state = this.initState(props);
+    this.searchValue = React.createRef();
+  }
+
+  initState = (props) => {
+    const { data, defaultData: selected, searchKey: propSearchKey } = props;
     const unSelected = data.filter(el => !selected.includes(el));
-    this.state = {
+    const searchKey = (typeof unSelected[0] === 'object' && !propSearchKey)
+      ? keys(unSelected[0])[0] : propSearchKey;
+    return {
       data,
       show: false,
       selected: [...selected],
       unSelected,
       searchString: '',
+      searchKey,
     };
-    this.searchValue = React.createRef();
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -35,7 +42,6 @@ export class MultiSelect extends Component {
 
   componentDidUpdate() {
     document.addEventListener('mousedown', this.handleClickOutside);
-    this.setRefAPI();
   }
 
   componentWillUnmount() {
@@ -68,7 +74,6 @@ export class MultiSelect extends Component {
     }
   }
 
-
   toggleMenu = (show = true) => {
     this.setState({ show });
     this.focusInput();
@@ -95,13 +100,12 @@ export class MultiSelect extends Component {
   }
 
   unSelectData = (index) => {
-    const { sortData } = this;
     const { onChange } = this.props;
     const { selected, unSelected } = this.state;
     unSelected.push(...selected.splice(index, 1));
     this.setState({
       selected,
-      unSelected: sortData(unSelected),
+      unSelected: unSelected,
       show: true,
       searchString: '',
     });
@@ -110,11 +114,10 @@ export class MultiSelect extends Component {
   }
 
   unSelectAll = () => {
-    const { sortData } = this;
     const { data, onChange } = this.props;
     this.setState({
       selected: [],
-      unSelected: [...sortData(data)],
+      unSelected: [...data],
       searchString: '',
     });
     onChange([]);
@@ -123,7 +126,7 @@ export class MultiSelect extends Component {
 
   sortData = (data) => {
     if (data.length === 0) { return []; }
-    const { searchKey } = this.props;
+    const { searchKey } = this.state;
     if (searchKey) {
       if (data[0][searchKey]) {
         return data.sort((a, b) => {
@@ -139,29 +142,18 @@ export class MultiSelect extends Component {
   }
 
   filterData = (data, search, searchKey) => {
-    const string = search.toLowerCase();
-    const index = data.map(({ [searchKey]: label }, index) =>
-      ({ index, pos: label.toLowerCase().indexOf(string) }));
-    const sorted = index.sort((a, b) => a.pos - b.pos);
-    const arranged = sorted.filter(({ pos }) => pos >= 0);
-    // .concat(sorted.filter(({ pos }) => pos < 0));
-    const result = arranged.map(({ index }) => data[index]);
-    return result;
+    if (search && searchKey) {
+      const string = search.toLowerCase();
+      const index = data.map(({ [searchKey]: label }, index) =>
+        ({ index, pos: label.toLowerCase().indexOf(string) }));
+      const sorted = index.sort((a, b) => a.pos - b.pos);
+      const arranged = sorted.filter(({ pos }) => pos >= 0);
+      // .concat(sorted.filter(({ pos }) => pos < 0));
+      const result = arranged.map(({ index }) => data[index]);
+      return result;
+    }
+    return data;
   }
-
-  // filterData = (data) => {
-  //   if (data.length === 0) { return []; }
-  //   const { searchString } = this.state;
-  //   const { searchKey } = this.props;
-  //   if (searchKey) {
-  //     if (data[0][searchKey]) {
-  //       return data.filter((
-  //         { [searchKey]: label },
-  //       ) => (label.toLowerCase().indexOf(searchString.toLowerCase()) === 0));
-  //     }
-  //   }
-  //   return data.filter(str => (str.toLowerCase().indexOf(searchString.toLowerCase()) === 0));
-  // }
 
   handleSearchInput = (e) => {
     const { value } = e.currentTarget;
@@ -171,18 +163,18 @@ export class MultiSelect extends Component {
   render() {
     const {
       toggleMenu, selectData, unSelectData, unSelectAll, filterData,
-      handleSearchInput, setWrapperRef,
+      handleSearchInput, setWrapperRef, sortData
     } = this;
     const {
-      element, selectedElement, searchKey, showCross,
+      element, selectedElement, showCross,
     } = this.props;
     const {
-      show, selected, unSelected, searchString,
+      show, selected, unSelected, searchString, searchKey,
     } = this.state;
     const typeTestSelected = selectedElement('test') === 'test';
     const typeTestUnSelected = element('test') === 'test';
     const elementInSelect = typeTestSelected ? element : selectedElement;
-    const filteredUnSelected = filterData(unSelected, searchString, searchKey);
+    const filteredUnSelected = filterData(sortData(unSelected), searchString, searchKey);
     const selectedLength = selected.length;
     const unSelectedLength = filteredUnSelected.length;
     const inputSize = searchString.length === 0 ? 1 : searchString.length;
