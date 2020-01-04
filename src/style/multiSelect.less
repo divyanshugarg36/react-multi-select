@@ -6,8 +6,8 @@
   min-width: 372px;
   max-width: 372px;
   background: @medium-background;
+  font-size: 18px;
   border-radius: @rhythm/2;
-  box-sizing: border-box;
   border: 1px solid transparent;
 
   @media only screen and (max-width: @tablet-medium) {
@@ -39,31 +39,30 @@
       flex-wrap: wrap;
       align-items: flex-start;
       padding-top: @rhythm;
-      padding-bottom: @rhythm/2;
+      padding-bottom: @rhythm;
 
       .node-container {
+        display: flex;
+        align-items: center;
         position: relative;
+        color: @color-medium;
         user-select: none;
         cursor: pointer;
-        margin: 0 @rhythm/2 @rhythm/2 0;
+        margin: @rhythm/4;
 
-        .node {
-          color: @color-medium;
+        &.node-container-external {
           border-radius: @rhythm/4;
           background: @white;
-          padding: @rhythm/4;
         }
 
-        .external-node {
+        .node {
           padding: @rhythm/4;
         }
 
         .remove-node {
-          position: absolute;
-          top: 2px;
-          right: 2px;
-          height: 6px;
-          width: 6px;
+          height: 10px;
+          width: 10px;
+          padding: 0 @rhythm/4;
           fill: @color-medium;
         }
       }
@@ -72,6 +71,7 @@
         all: unset;
         color: @color-medium;
         max-width: 200px;
+        align-self: center;
       }
     }
 
@@ -115,7 +115,7 @@
     z-index: 99;
     position: absolute;
     background: @white;
-    top: calc(100% + 2px);
+    top: calc(100% + 1px);
     width: 100%;
     box-shadow: @box-shadow;
     border-radius: @rhythm;

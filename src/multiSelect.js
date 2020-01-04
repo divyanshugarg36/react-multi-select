@@ -29,8 +29,14 @@ export class MultiSelect extends Component {
     return null;
   }
 
+  componentDidMount() {
+    this.setRefAPI()
+  }
+
+
   componentDidUpdate() {
     document.addEventListener('mousedown', this.handleClickOutside);
+    this.setRefAPI();
   }
 
   componentWillUnmount() {
@@ -44,6 +50,20 @@ export class MultiSelect extends Component {
   handleClickOutside = (event) => {
     if (this.show && !this.show.contains(event.target)) {
       this.setState({ show: false });
+    }
+  }
+
+  setRefAPI = () => {
+    const { ref1 } = this.props || {};
+    if (ref1) {
+      ref1.current = {};
+      ref1.current.getApi = () => {
+        return {
+          clear: this.unSelectAll,
+          show: this.toggleMenu,
+          focus: this.focusInput
+        };
+      }
     }
   }
 
@@ -167,14 +187,14 @@ export class MultiSelect extends Component {
             {selected.map((sel, index) => (
               <div
                 key={index}
-                className="node-container"
+                className={`node-container ${(!typeTestUnSelected || !typeTestSelected)
+                  ? '' : 'node-container-external'}`}
                 onClick={(e) => {
                   unSelectData(index);
                   e.stopPropagation();
                 }}
               >
-                <div className={(!typeTestUnSelected || !typeTestSelected)
-                  ? 'external-node' : 'node'}
+                <div className='node'
                 >
                   {elementInSelect(sel, searchKey)}
                 </div>
