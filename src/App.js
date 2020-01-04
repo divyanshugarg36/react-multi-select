@@ -29,7 +29,7 @@ class App extends React.Component {
     return (
       <div className="App" >
         <MultiSelect
-          ref1={this.testSelect}
+          refApi={this.testSelect}
           data={DATA}
           // defaultData={[DATA[0], DATA[1]]}
           element={(str) => `${str.name}.`}

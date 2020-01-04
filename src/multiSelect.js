@@ -33,7 +33,6 @@ export class MultiSelect extends Component {
     this.setRefAPI()
   }
 
-
   componentDidUpdate() {
     document.addEventListener('mousedown', this.handleClickOutside);
     this.setRefAPI();
@@ -54,14 +53,16 @@ export class MultiSelect extends Component {
   }
 
   setRefAPI = () => {
-    const { ref1 } = this.props || {};
-    if (ref1) {
-      ref1.current = {};
-      ref1.current.getApi = () => {
+    const { selected } = this.state;
+    const { refApi } = this.props || {};
+    if (refApi) {
+      refApi.current = {};
+      refApi.current.getApi = () => {
         return {
           clear: this.unSelectAll,
           show: this.toggleMenu,
-          focus: this.focusInput
+          focus: this.focusInput,
+          value: selected,
         };
       }
     }
@@ -142,7 +143,8 @@ export class MultiSelect extends Component {
     const index = data.map(({ [searchKey]: label }, index) =>
       ({ index, pos: label.toLowerCase().indexOf(string) }));
     const sorted = index.sort((a, b) => a.pos - b.pos);
-    const arranged = sorted.filter(({ pos }) => pos >= 0).concat(sorted.filter(({ pos }) => pos < 0));
+    const arranged = sorted.filter(({ pos }) => pos >= 0);
+    // .concat(sorted.filter(({ pos }) => pos < 0));
     const result = arranged.map(({ index }) => data[index]);
     return result;
   }
