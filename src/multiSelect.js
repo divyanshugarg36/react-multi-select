@@ -25,6 +25,7 @@ export class MultiSelect extends Component {
       unSelected,
       searchString: '',
       searchKey,
+      position: {},
     };
   }
 
@@ -39,11 +40,18 @@ export class MultiSelect extends Component {
   }
 
   componentDidMount() {
-    this.setRefAPI()
-  }
-
-  componentDidUpdate() {
+    this.setRefAPI();
+    this.setDropdownPosition();
     document.addEventListener('mousedown', this.handleClickOutside);
+    // document.addEventListener('scroll', () => {
+    //   var timer = null;
+    //   if (timer !== null) {
+    //     clearTimeout(timer);
+    //   }
+    //   timer = setTimeout(() => {
+    //     this.setDropdownPosition();
+    //   }, 100);
+    // });
   }
 
   componentWillUnmount() {
@@ -58,6 +66,16 @@ export class MultiSelect extends Component {
     if (this.show && !this.show.contains(event.target)) {
       this.setState({ show: false });
     }
+  }
+
+  setDropdownPosition = () => {
+    const { innerHeight } = window;
+    const { top, height } = this.show.getBoundingClientRect();
+    let position;
+    const bottomSpace = (top + height - innerHeight) * -1;
+    position = (bottomSpace > 150) ? { top: "calc(100% + 1px)" } : { bottom: "calc(100% + 1px)" };
+    console.log(bottomSpace);
+    this.setState({ position });
   }
 
   setRefAPI = () => {
@@ -78,6 +96,9 @@ export class MultiSelect extends Component {
 
   toggleMenu = (show = true) => {
     this.setState({ show });
+    if (show) {
+      this.setDropdownPosition();
+    }
     this.focusInput();
   }
 
@@ -171,11 +192,10 @@ export class MultiSelect extends Component {
       element, selectedElement, showCross,
     } = this.props;
     const {
-      show, selected, unSelected, searchString, searchKey,
+      show, selected, unSelected, searchString, searchKey, position
     } = this.state;
-    const typeTestSelected = selectedElement('test') === 'test';
-    const typeTestUnSelected = element('test') === 'test';
-    const elementInSelect = typeTestSelected ? element : selectedElement;
+    const typeTestSelected = selectedElement('a') === 'a';
+    const typeTestUnSelected = element('a') === 'a';
     const filteredUnSelected = filterData(sortData(unSelected), searchString, searchKey);
     const selectedLength = selected.length;
     const unSelectedLength = filteredUnSelected.length;
@@ -202,7 +222,7 @@ export class MultiSelect extends Component {
               >
                 <div className='node'
                 >
-                  {elementInSelect(sel, searchKey)}
+                  {selectedElement(sel, searchKey)}
                 </div>
                 {showCross && <CloseIcon className="remove-node" />}
               </div>
@@ -227,7 +247,7 @@ export class MultiSelect extends Component {
           </div>
         </div>
         {show && (
-          <div className="multi-select-dropdown">
+          <div className="multi-select-dropdown" style={position}>
             {(unSelectedLength === 0)
               ? <div className="no-options">No Options!</div>
               : (
@@ -264,10 +284,7 @@ MultiSelect.propTypes = {
 MultiSelect.defaultProps = {
   data: ['No Data'],
   defaultData: [],
-  element: (data, searchKey) => {
-    console.log(searchKey, '?', data[searchKey], ':', data, '=', searchKey ? data[searchKey] : data);
-    return searchKey ? data[searchKey] : data;
-  },
+  element: (data, searchKey) => (searchKey ? data[searchKey] : data),
   selectedElement: (data, searchKey) => (searchKey ? data[searchKey] : data),
   searchKey: '',
   maxValues: 0,
