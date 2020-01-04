@@ -12,7 +12,9 @@ export class MultiSelect extends Component {
   }
 
   initState = (props) => {
-    const { data, defaultData: selected, searchKey: sKey } = props;
+    const { data, defaultData, searchKey: sKey, maxValues } = props;
+    const selected = (defaultData.length > maxValues) && (maxValues !== 0)
+      ? [defaultData[0]] : defaultData;
     const unSelected = data.filter(el => !selected.includes(el));
     const searchKey = (typeof unSelected[0] === 'string' && sKey)
       ? '' : (sKey || keys(unSelected[0])[0]);
