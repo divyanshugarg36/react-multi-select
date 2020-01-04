@@ -2,12 +2,13 @@ import React from 'react';
 import { MultiSelect } from './multiSelect';
 
 const DATA = [
-  'Apple',
-  'Ball',
-  'Cat',
-  'Dog',
-  'Elephant',
-  'Fish'
+  { name: 'Fish' },
+  { name: 'Apple' },
+  { name: 'Ball' },
+  { name: 'Ellephant' },
+  { name: 'Cat' },
+  { name: 'Balled' },
+  { name: 'Dog' },
 ]
 
 class App extends React.Component {
@@ -30,10 +31,10 @@ class App extends React.Component {
         <MultiSelect
           ref1={this.testSelect}
           data={DATA}
-          defaultData={[DATA[0], DATA[1]]}
-          element={() => 'Hello'}
-          selectedElement={() => 'Hello1'}
-          // searchKey="label"
+          // defaultData={[DATA[0], DATA[1]]}
+          element={(str) => `${str.name}.`}
+          selectedElement={(str) => `${str.name}.`}
+          searchKey="name"
           // maxValues={1}
           showCross
           onChange={(data) => { console.log(data); }}

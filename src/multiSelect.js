@@ -137,19 +137,29 @@ export class MultiSelect extends Component {
     return data.sort();
   }
 
-  filterData = (data) => {
-    if (data.length === 0) { return []; }
-    const { searchString } = this.state;
-    const { searchKey } = this.props;
-    if (searchKey) {
-      if (data[0][searchKey]) {
-        return data.filter((
-          { [searchKey]: label },
-        ) => (label.toLowerCase().indexOf(searchString.toLowerCase()) === 0));
-      }
-    }
-    return data.filter(str => (str.toLowerCase().indexOf(searchString.toLowerCase()) === 0));
+  filterData = (data, search, searchKey) => {
+    const string = search.toLowerCase();
+    const index = data.map(({ [searchKey]: label }, index) =>
+      ({ index, pos: label.toLowerCase().indexOf(string) }));
+    const sorted = index.sort((a, b) => a.pos - b.pos);
+    const arranged = sorted.filter(({ pos }) => pos >= 0).concat(sorted.filter(({ pos }) => pos < 0));
+    const result = arranged.map(({ index }) => data[index]);
+    return result;
   }
+
+  // filterData = (data) => {
+  //   if (data.length === 0) { return []; }
+  //   const { searchString } = this.state;
+  //   const { searchKey } = this.props;
+  //   if (searchKey) {
+  //     if (data[0][searchKey]) {
+  //       return data.filter((
+  //         { [searchKey]: label },
+  //       ) => (label.toLowerCase().indexOf(searchString.toLowerCase()) === 0));
+  //     }
+  //   }
+  //   return data.filter(str => (str.toLowerCase().indexOf(searchString.toLowerCase()) === 0));
+  // }
 
   handleSearchInput = (e) => {
     const { value } = e.currentTarget;
@@ -170,7 +180,7 @@ export class MultiSelect extends Component {
     const typeTestSelected = selectedElement('test') === 'test';
     const typeTestUnSelected = element('test') === 'test';
     const elementInSelect = typeTestSelected ? element : selectedElement;
-    const filteredUnSelected = filterData(unSelected);
+    const filteredUnSelected = filterData(unSelected, searchString, searchKey);
     const selectedLength = selected.length;
     const unSelectedLength = filteredUnSelected.length;
     const inputSize = searchString.length === 0 ? 1 : searchString.length;
