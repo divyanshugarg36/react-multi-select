@@ -45,7 +45,7 @@ class App extends React.Component {
           // element={(str) => `${str.name}.`}
           // selectedElement={(str) => `${str.name}.`}
           // searchKey="values"
-          maxValues={1}
+          // maxValues={1}
           showCross
           onChange={(data) => { console.log(data); }}
         />

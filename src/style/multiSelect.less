@@ -34,6 +34,8 @@
     max-height: 100px;
     overflow: auto;
 
+    .scroll-bar();
+
     .node-section {
       display: flex;
       flex-wrap: wrap;
@@ -49,14 +51,17 @@
         user-select: none;
         cursor: pointer;
         margin: @rhythm/4;
+        border-radius: @rhythm/4;
+        border: 1px solid @color-light;
+        background: white;
 
         &.node-container-external {
-          border-radius: @rhythm/4;
-          background: @white;
+          border: 0;
+          background: none;
         }
 
         .node {
-          padding: @rhythm/4;
+          padding-left: @rhythm/4;
         }
 
         .remove-node {

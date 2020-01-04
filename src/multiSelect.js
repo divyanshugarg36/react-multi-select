@@ -16,8 +16,8 @@ export class MultiSelect extends Component {
     const selected = (defaultData.length > maxValues) && (maxValues !== 0)
       ? [defaultData[0]] : defaultData;
     const unSelected = data.filter(el => !selected.includes(el));
-    const searchKey = (typeof unSelected[0] === 'string' && sKey)
-      ? '' : (sKey || keys(unSelected[0])[0]);
+    const searchKey = (typeof unSelected[0] === 'string')
+      ? undefined : (sKey || keys(unSelected[0])[0]);
     return {
       data,
       show: false,
@@ -194,7 +194,7 @@ export class MultiSelect extends Component {
               <div
                 key={index}
                 className={`node-container ${(!typeTestUnSelected || !typeTestSelected)
-                  ? '' : 'node-container-external'}`}
+                  ? 'node-container-external' : ''}`}
                 onClick={(e) => {
                   unSelectData(index);
                   e.stopPropagation();
@@ -264,7 +264,10 @@ MultiSelect.propTypes = {
 MultiSelect.defaultProps = {
   data: ['No Data'],
   defaultData: [],
-  element: (data, searchKey) => (searchKey ? data[searchKey] : data),
+  element: (data, searchKey) => {
+    console.log(searchKey, '?', data[searchKey], ':', data, '=', searchKey ? data[searchKey] : data);
+    return searchKey ? data[searchKey] : data;
+  },
   selectedElement: (data, searchKey) => (searchKey ? data[searchKey] : data),
   searchKey: '',
   maxValues: 0,
