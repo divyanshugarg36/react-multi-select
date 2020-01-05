@@ -254,6 +254,7 @@ export class MultiSelect extends Component {
                   {filteredUnSelected.map((sel, index) => (
                     <div
                       key={index}
+                      keyIndex={0}
                       className="node-container"
                       onClick={() => selectData(sel)}
                     >

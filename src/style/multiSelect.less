@@ -140,7 +140,13 @@
       .node-container {
         cursor: pointer;
         color: @color-medium;
+
+        &:focus,
+        &:hover {
+          background: @dark-background;
+        }
       }
+
     }
   }
 }
