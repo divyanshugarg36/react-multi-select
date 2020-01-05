@@ -178,14 +178,56 @@ export class MultiSelect extends Component {
   }
 
   handleSearchInput = (e) => {
-    const { value } = e.currentTarget;
+    const { currentTarget } = e;
+    const { value } = currentTarget;
     this.setState({ searchString: value, show: true });
+  }
+
+  handleSearchInputUp = (e) => {
+    const { keyCode } = e;
+    if (keyCode === 40) {
+      const allNodes = document.querySelectorAll("[tabIndex].node-container");
+      allNodes[0].focus();
+    }
+  }
+
+  handleSearchInputDown = (e) => {
+    const { keyCode } = e;
+    const { selected, searchString } = this.state;
+    if (keyCode === 13) {
+      const allNodes = document.querySelectorAll("[tabIndex].node-container");
+      allNodes[0].focus();
+    }
+    if (keyCode === 8 && !searchString) {
+      this.unSelectData(selected.length - 1);
+    }
+  }
+
+  handleNodeKey = (e, sel) => {
+    const { keyCode, currentTarget } = e;
+    const prev = currentTarget.previousSibling;
+    const next = currentTarget.nextSibling;
+    if (keyCode === 13) {
+      this.selectData(sel);
+      this.setState({ searchString: '' });
+    }
+    if (keyCode === 38) {
+      if (prev) {
+        prev.focus();
+      } else {
+        this.focusInput();
+      }
+    }
+    if (keyCode === 40 && next) {
+      next.focus();
+    }
   }
 
   render() {
     const {
       toggleMenu, selectData, unSelectData, unSelectAll, filterData,
-      handleSearchInput, setWrapperRef, sortData
+      handleSearchInput, setWrapperRef, sortData, handleNodeKey,
+      handleSearchInputUp, handleSearchInputDown
     } = this;
     const {
       element, selectedElement, showCross,
@@ -230,6 +272,8 @@ export class MultiSelect extends Component {
               className="search-value"
               ref={this.searchValue}
               onChange={handleSearchInput}
+              onKeyUp={handleSearchInputUp}
+              onKeyDown={handleSearchInputDown}
               value={searchString}
               size={inputSize}
             />
@@ -254,7 +298,8 @@ export class MultiSelect extends Component {
                   {filteredUnSelected.map((sel, index) => (
                     <div
                       key={index}
-                      keyIndex={0}
+                      tabIndex={0}
+                      onKeyUp={(e) => handleNodeKey(e, sel)}
                       className="node-container"
                       onClick={() => selectData(sel)}
                     >
