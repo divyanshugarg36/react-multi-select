@@ -185,8 +185,8 @@ export class MultiSelect extends Component {
 
   handleSearchInputUp = (e) => {
     const { keyCode } = e;
-    if (keyCode === 40) {
-      const allNodes = document.querySelectorAll("[tabIndex].node-container");
+    const allNodes = document.querySelectorAll("[tabIndex].node-container");
+    if (keyCode === 40 && allNodes[0]) {
       allNodes[0].focus();
     }
   }
@@ -194,8 +194,8 @@ export class MultiSelect extends Component {
   handleSearchInputDown = (e) => {
     const { keyCode } = e;
     const { selected, searchString } = this.state;
-    if (keyCode === 13) {
-      const allNodes = document.querySelectorAll("[tabIndex].node-container");
+    const allNodes = document.querySelectorAll("[tabIndex].node-container");
+    if (keyCode === 13 && allNodes[0]) {
       allNodes[0].focus();
     }
     if (keyCode === 8 && !searchString) {
@@ -276,6 +276,7 @@ export class MultiSelect extends Component {
               onKeyDown={handleSearchInputDown}
               value={searchString}
               size={inputSize}
+              maxlength="15"
             />
           </div>
           <div className="icon-section">
