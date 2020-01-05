@@ -9,6 +9,7 @@ export class MultiSelect extends Component {
     super(props);
     this.state = this.initState(props);
     this.searchValue = React.createRef();
+    this.validate = React.createRef();
   }
 
   initState = (props) => {
@@ -43,15 +44,7 @@ export class MultiSelect extends Component {
     this.setRefAPI();
     this.setDropdownPosition();
     document.addEventListener('mousedown', this.handleClickOutside);
-    // document.addEventListener('scroll', () => {
-    //   var timer = null;
-    //   if (timer !== null) {
-    //     clearTimeout(timer);
-    //   }
-    //   timer = setTimeout(() => {
-    //     this.setDropdownPosition();
-    //   }, 100);
-    // });
+    document.addEventListener('scroll', () => { this.toggleMenu(false) });
   }
 
   componentWillUnmount() {
@@ -63,7 +56,8 @@ export class MultiSelect extends Component {
   }
 
   handleClickOutside = (event) => {
-    if (this.show && !this.show.contains(event.target)) {
+    const { show } = this.state;
+    if (this.show && !this.show.contains(event.target) && show) {
       this.setState({ show: false });
     }
   }
@@ -104,6 +98,20 @@ export class MultiSelect extends Component {
   focusInput = () => {
     const { searchValue } = this;
     searchValue.current.focus();
+  }
+
+  validateMessage = () => {
+    const { validate: current } = this;
+    const { minValues } = this.props;
+    const { selected } = this.state;
+    if (current) {
+      const string = selected.length === 0
+        ? "Please select the data."
+        : `Please select at least ${minValues} values.`;
+      try {
+        this.validate.current.setCustomValidity(string);
+      } catch{ }
+    }
   }
 
   selectData = (select) => {
@@ -227,10 +235,10 @@ export class MultiSelect extends Component {
     const {
       toggleMenu, selectData, unSelectData, unSelectAll, filterData,
       handleSearchInput, setWrapperRef, sortData, handleNodeKey,
-      handleSearchInputUp, handleSearchInputDown
+      handleSearchInputUp, handleSearchInputDown, validateMessage
     } = this;
     const {
-      element, selectedElement, showCross,
+      element, selectedElement, showCross, required, minValues
     } = this.props;
     const {
       show, selected, unSelected, searchString, searchKey, position
@@ -241,11 +249,18 @@ export class MultiSelect extends Component {
     const selectedLength = selected.length;
     const unSelectedLength = filteredUnSelected.length;
     const inputSize = searchString.length === 0 ? 1 : searchString.length;
+    const validate = ((required || minValues > 0) && !(minValues - 1 < selectedLength));
     return (
       <div
         className={`multi-select ${show}`}
         ref={setWrapperRef}
       >
+        {validate && <input
+          ref={this.validate}
+          className="validation-input"
+          required
+          onFocus={this.focusInput}
+        />}
         <div
           className="multi-select-content"
           onClick={() => toggleMenu(!show)}
@@ -271,12 +286,13 @@ export class MultiSelect extends Component {
             <input
               className="search-value"
               ref={this.searchValue}
+              onFocus={validateMessage}
               onChange={handleSearchInput}
               onKeyUp={handleSearchInputUp}
               onKeyDown={handleSearchInputDown}
               value={searchString}
               size={inputSize}
-              maxlength="15"
+              maxLength="15"
             />
           </div>
           <div className="icon-section">
@@ -322,9 +338,11 @@ MultiSelect.propTypes = {
   element: PropTypes.func,
   selectedElement: PropTypes.func,
   maxValues: PropTypes.number,
+  minValues: PropTypes.number,
   onChange: PropTypes.func.isRequired,
   searchKey: PropTypes.string,
   showCross: PropTypes.bool,
+  required: PropTypes.bool,
 };
 
 MultiSelect.defaultProps = {
@@ -334,5 +352,7 @@ MultiSelect.defaultProps = {
   selectedElement: (data, searchKey) => (searchKey ? data[searchKey] : data),
   searchKey: '',
   maxValues: 0,
+  minValues: 0,
   showCross: false,
+  required: false,
 };

@@ -35,20 +35,30 @@ class App extends React.Component {
     // }, 2000)
   }
 
+  sub = (e) => {
+    e.preventDefault();
+    console.log('submitted');
+  }
+
   render() {
     return (
       <div className="App" >
-        <MultiSelect
-          refApi={this.testSelect}
-          data={DATA}
-          defaultData={[DATA[0], DATA[1]]}
-          // element={(str) => `${str.name}.`}
-          // selectedElement={(str) => `${str.name}.`}
-          // searchKey="values"
-          // maxValues={1}
-          showCross
-          onChange={(data) => { console.log(data); }}
-        />
+        <form onSubmit={this.sub}>
+          <MultiSelect
+            refApi={this.testSelect}
+            data={DATA}
+            defaultData={[DATA[0], DATA[1]]}
+            // element={(str) => `${str.name}.`}
+            // selectedElement={(str) => `${str.name}.`}
+            // searchKey="values"
+            minValues={2}
+            // maxValues={1}
+            showCross
+            onChange={(data) => { console.log(data); }}
+          // required
+          />
+          <button type="submit">Hello</button>
+        </form>
       </div>
     );
   }

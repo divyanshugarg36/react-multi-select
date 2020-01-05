@@ -26,6 +26,20 @@
     border: 1px solid @blue;
   }
 
+  .validation-input {
+    cursor: default;
+    position: absolute;
+    height: 0;
+    width: 0;
+    border: 1px solid transparent;
+    right: 50%;
+    bottom: 0;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
   .multi-select-content {
     display: flex;
     justify-content: space-between;
