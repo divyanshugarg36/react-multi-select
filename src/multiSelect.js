@@ -193,7 +193,7 @@ export class MultiSelect extends Component {
   }
 
   handleSearchInput = ({ currentTarget: { value } }) => {
-    this.setState({ searchString: value, show: true });
+    this.setState({ searchString: value.trimStart(), show: true });
   }
 
   handleSearchInputUp = (e) => {
@@ -237,19 +237,13 @@ export class MultiSelect extends Component {
       handleSearchInput, sortData, handleNodeKey, handleSearchInputUp,
       handleSearchInputDown, validateMessage, setDropdownPosition
     } = this;
-    const {
-      element, selectedElement, showCross, required, minValues
-    } = this.props;
-    const {
-      show, selected, unSelected, searchString, searchKey
-    } = this.state;
+    const { element, selectedElement, showCross, required, minValues } = this.props;
+    const { show, selected, unSelected, searchString, searchKey } = this.state;
     const typeTestSelected = selectedElement('a') === 'a';
     const typeTestUnSelected = element('a') === 'a';
     const filteredUnSelected = filterData(sortData(unSelected), searchString, searchKey);
-    const selectedLength = selected.length;
-    const unSelectedLength = filteredUnSelected.length;
     const inputSize = searchString.length === 0 ? 1 : searchString.length;
-    const validate = ((required || minValues > 0) && !(minValues - 1 < selectedLength));
+    const validate = ((required || minValues > 0) && !(minValues - 1 < selected.length));
     return (
       <div
         className={`multi-select ${show}`}
@@ -276,8 +270,7 @@ export class MultiSelect extends Component {
                   e.stopPropagation();
                 }}
               >
-                <div className='node'
-                >
+                <div className='node'>
                   {selectedElement(sel, searchKey)}
                 </div>
                 {showCross && <CloseIcon className="remove-node" />}
@@ -297,7 +290,7 @@ export class MultiSelect extends Component {
           </div>
           <div className="icon-section">
             <CloseIcon
-              className={`remove-all ${!selectedLength && 'disable'}`}
+              className={`remove-all ${!selected.length && 'disable'}`}
               onClick={unSelectAll}
             />
             <div className="divider" />
@@ -306,7 +299,7 @@ export class MultiSelect extends Component {
         </div>
         {show && (
           <div className="multi-select-dropdown" style={setDropdownPosition()}>
-            {(unSelectedLength === 0)
+            {(filteredUnSelected.length === 0)
               ? <div className="no-options">No Options!</div>
               : (
                 <div className="unselected-nodes">
