@@ -140,15 +140,18 @@ export class MultiSelect extends Component {
 
   unSelectData = (index) => {
     const { onChange } = this.props;
-    const { selected, unSelected } = this.state;
-    unSelected.push(...selected.splice(index, 1));
-    this.setState({
-      selected,
-      unSelected,
-      show: true,
-      searchString: '',
-    });
-    onChange(selected);
+    this.setState(
+      ({ selected, unSelected }) => {
+        unSelected.push(...selected.splice(index, 1));
+        onChange(selected);
+        return {
+          selected,
+          unSelected,
+          show: true,
+          searchString: '',
+        }
+      }
+    );
     this.focusInput();
   }
 
