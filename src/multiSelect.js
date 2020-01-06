@@ -135,7 +135,7 @@ export class MultiSelect extends Component {
     unSelected.push(...selected.splice(index, 1));
     this.setState({
       selected,
-      unSelected: unSelected,
+      unSelected,
       show: true,
       searchString: '',
     });
