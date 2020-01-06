@@ -48,7 +48,7 @@ class App extends React.Component {
             refApi={this.testSelect}
             data={DATA}
             defaultData={[DATA[0], DATA[1]]}
-            // element={(str) => `${str.name}.`}
+            element={(str) => `${str.name}.`}
             // selectedElement={(str) => `${str.name}.`}
             // searchKey="values"
             minValues={2}

@@ -10,6 +10,7 @@ export class MultiSelect extends Component {
     this.state = this.initState(props);
     this.searchValue = React.createRef();
     this.validate = React.createRef();
+    this.show = React.createRef();
   }
 
   initState = (props) => {
@@ -43,6 +44,7 @@ export class MultiSelect extends Component {
     this.setRefAPI();
     document.addEventListener('mousedown', this.handleClickOutside);
     document.addEventListener('scroll', this.handleScroll);
+    console.log(this.div);
   }
 
   componentWillUnmount() {
@@ -50,13 +52,9 @@ export class MultiSelect extends Component {
     document.removeEventListener('scroll', this.handleScroll);
   }
 
-  setWrapperRef = (node) => {
-    this.show = node;
-  }
-
   handleClickOutside = (event) => {
     const { show } = this.state;
-    if (this.show && !this.show.contains(event.target) && show) {
+    if (this.show.current && !this.show.current.contains(event.target) && show) {
       this.setState({ show: false, searchString: '' });
     }
   }
@@ -68,7 +66,7 @@ export class MultiSelect extends Component {
   setDropdownPosition = () => {
     const { parentId } = this.props;
     const { innerHeight } = window;
-    const { top, height, bottom: bottomSelect } = this.show.getBoundingClientRect();
+    const { top, height, bottom: bottomSelect } = this.show.current.getBoundingClientRect();
     let parentBottomSpace;
     if (parentId) {
       const { bottom: bottomParent } = document.getElementById(parentId).getBoundingClientRect();
@@ -183,18 +181,16 @@ export class MultiSelect extends Component {
     return data.sort();
   }
 
-  filterData = (data, search, searchKey) => {
-    if (search && searchKey) {
-      const string = search.toLowerCase();
-      const index = data.map(({ [searchKey]: label }, index) =>
-        ({ index, pos: label.toLowerCase().indexOf(string) }));
-      const sorted = index.sort((a, b) => a.pos - b.pos);
-      const arranged = sorted.filter(({ pos }) => pos >= 0);
-      // .concat(sorted.filter(({ pos }) => pos < 0));
-      const result = arranged.map(({ index }) => data[index]);
-      return result;
+  filterData = (data, searchString, searchKey) => {
+    if (data.length === 0) { return []; }
+    if (searchKey) {
+      if (data[0][searchKey]) {
+        return data.filter((
+          { [searchKey]: label },
+        ) => (label.toLowerCase().indexOf(searchString.toLowerCase()) > -1));
+      }
     }
-    return data;
+    return data.filter(str => (str.toLowerCase().indexOf(searchString.toLowerCase()) > -1));
   }
 
   handleSearchInput = (e) => {
@@ -246,7 +242,9 @@ export class MultiSelect extends Component {
   render() {
     const {
       toggleMenu, selectData, unSelectData, unSelectAll, filterData,
-      handleSearchInput, setWrapperRef, sortData, handleNodeKey,
+      handleSearchInput,
+      //  setWrapperRef,
+      sortData, handleNodeKey,
       handleSearchInputUp, handleSearchInputDown, validateMessage,
       setDropdownPosition
     } = this;
@@ -266,7 +264,7 @@ export class MultiSelect extends Component {
     return (
       <div
         className={`multi-select ${show}`}
-        ref={setWrapperRef}
+        ref={this.show}
       >
         {validate && <input
           ref={this.validate}
