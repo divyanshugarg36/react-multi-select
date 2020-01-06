@@ -28,11 +28,10 @@ class App extends React.Component {
     this.testSelect = React.createRef();
   }
   componentDidMount() {
-    // const multi = this.testSelect.current.getApi();
-    // console.log(multi);
-    // setTimeout(() => {
-    //   multi.clear();
-    // }, 2000)
+    const multi = this.testSelect.current;
+    setInterval(() => {
+      console.log(multi);
+    }, 1000)
   }
 
   sub = (e) => {

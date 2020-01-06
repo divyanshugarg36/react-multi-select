@@ -34,10 +34,10 @@ export class MultiSelect extends Component {
   componentDidMount() {
     document.addEventListener('mousedown', this.handleExit);
     document.addEventListener('scroll', this.handleExit);
+    this.setRefAPI();
   }
 
   componentDidUpdate() {
-    console.log(this.validate);
     this.setRefAPI();
   }
 
@@ -64,14 +64,11 @@ export class MultiSelect extends Component {
     const { selected } = this.state;
     const { refApi } = this.props || {};
     if (refApi) {
-      refApi.current = {};
-      refApi.current.getApi = () => {
-        return {
-          clear: this.unSelectAll,
-          show: this.toggleMenu,
-          focus: this.focusInput,
-          value: selected,
-        };
+      refApi.current = {
+        clear: this.unSelectAll,
+        show: this.toggleMenu,
+        focus: this.focusInput,
+        value: selected,
       }
     }
   }
@@ -319,7 +316,7 @@ MultiSelect.propTypes = {
   selectedElement: PropTypes.func,
   maxValues: PropTypes.number,
   minValues: PropTypes.number,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   searchKey: PropTypes.string,
   showCross: PropTypes.bool,
   required: PropTypes.bool,
@@ -334,6 +331,7 @@ MultiSelect.defaultProps = {
   searchKey: '',
   maxValues: 0,
   minValues: 0,
+  onChange: () => { },
   showCross: false,
   required: false,
   parentId: '',
