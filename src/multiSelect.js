@@ -157,28 +157,24 @@ export class MultiSelect extends Component {
   sortData = (data) => {
     if (data.length === 0) { return []; }
     const { searchKey } = this.state;
-    if (searchKey) {
-      if (data[0][searchKey]) {
-        return data.sort((a, b) => {
-          const A = a[searchKey].toUpperCase();
-          const B = b[searchKey].toUpperCase();
-          let res = 0;
-          if (A > B) { res = 1; } else if (A < B) { res = -1; }
-          return res;
-        });
-      }
+    if (searchKey && data[0][searchKey]) {
+      return data.sort((a, b) => {
+        const A = a[searchKey].toUpperCase();
+        const B = b[searchKey].toUpperCase();
+        let res = 0;
+        if (A > B) { res = 1; } else if (A < B) { res = -1; }
+        return res;
+      });
     }
     return data.sort();
   }
 
   filterData = (data, searchString, searchKey) => {
     if (data.length === 0) { return []; }
-    if (searchKey) {
-      if (data[0][searchKey]) {
-        return data.filter((
-          { [searchKey]: label },
-        ) => (label.toLowerCase().indexOf(searchString.toLowerCase()) > -1));
-      }
+    if (searchKey && data[0][searchKey]) {
+      return data.filter((
+        { [searchKey]: label },
+      ) => (label.toLowerCase().indexOf(searchString.toLowerCase()) > -1));
     }
     return data.filter(str => (str.toLowerCase().indexOf(searchString.toLowerCase()) > -1));
   }
