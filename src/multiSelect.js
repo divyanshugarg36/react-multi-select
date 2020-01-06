@@ -7,27 +7,18 @@ import { ArrowDown, CloseIcon } from './icons';
 export class MultiSelect extends Component {
   constructor(props) {
     super(props);
-    this.state = this.initState(props);
-    this.searchValue = React.createRef();
-    this.validate = React.createRef();
-    this.show = React.createRef();
-  }
-
-  initState = (props) => {
     const { data, defaultData, searchKey: sKey, maxValues } = props;
     const selected = (defaultData.length > maxValues) && (maxValues !== 0)
       ? [defaultData[0]] : defaultData;
     const unSelected = data.filter(el => !selected.includes(el));
     const searchKey = (typeof unSelected[0] === 'string')
       ? undefined : (sKey || keys(unSelected[0])[0]);
-    return {
-      data,
-      show: false,
-      selected: [...selected],
-      unSelected,
-      searchString: '',
-      searchKey,
+    this.state = {
+      data, show: false, selected: [...selected], unSelected, searchString: '', searchKey,
     };
+    this.searchValue = React.createRef();
+    this.validate = React.createRef();
+    this.show = React.createRef();
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
