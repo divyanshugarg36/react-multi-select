@@ -42,12 +42,12 @@ export class MultiSelect extends Component {
   componentDidMount() {
     this.setRefAPI();
     document.addEventListener('mousedown', this.handleClickOutside);
-    document.addEventListener('scroll', () => { this.toggleMenu(false) });
+    document.addEventListener('scroll', this.handleScroll);
   }
 
   componentWillUnmount() {
     document.removeEventListener('mousedown', this.handleClickOutside);
-    document.removeEventListener('scroll', () => { this.toggleMenu(false) });
+    document.removeEventListener('scroll', this.handleScroll);
   }
 
   setWrapperRef = (node) => {
@@ -59,6 +59,10 @@ export class MultiSelect extends Component {
     if (this.show && !this.show.contains(event.target) && show) {
       this.setState({ show: false, searchString: '' });
     }
+  }
+
+  handleScroll = () => {
+    this.toggleMenu(false);
   }
 
   setDropdownPosition = () => {
