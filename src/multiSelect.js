@@ -42,25 +42,27 @@ export class MultiSelect extends Component {
 
   componentDidMount() {
     this.setRefAPI();
-    document.addEventListener('mousedown', this.handleClickOutside);
-    document.addEventListener('scroll', this.handleScroll);
-    console.log(this.div);
+    document.addEventListener('mousedown', this.handleExit);
+    document.addEventListener('scroll', this.handleExit);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickOutside);
-    document.removeEventListener('scroll', this.handleScroll);
+    document.removeEventListener('mousedown', this.handleExit);
+    document.removeEventListener('scroll', this.handleExit);
   }
 
-  handleClickOutside = (event) => {
+  handleExit = (event) => {
     const { show } = this.state;
-    if (this.show.current && !this.show.current.contains(event.target) && show) {
-      this.setState({ show: false, searchString: '' });
+    if (show) {
+      if (event.type === 'mousedown') {
+        if (this.show.current && !this.show.current.contains(event.target)) {
+          this.setState({ show: false, searchString: '' });
+        }
+      }
+      if (event.type === 'scroll') {
+        this.setState({ show: false, searchString: '' });
+      }
     }
-  }
-
-  handleScroll = () => {
-    this.toggleMenu(false);
   }
 
   setDropdownPosition = () => {
@@ -96,9 +98,6 @@ export class MultiSelect extends Component {
 
   toggleMenu = (show = true) => {
     this.setState({ show });
-    if (show) {
-      this.setDropdownPosition();
-    }
     this.focusInput();
   }
 
@@ -193,15 +192,13 @@ export class MultiSelect extends Component {
     return data.filter(str => (str.toLowerCase().indexOf(searchString.toLowerCase()) > -1));
   }
 
-  handleSearchInput = (e) => {
-    const { currentTarget } = e;
-    const { value } = currentTarget;
+  handleSearchInput = ({ currentTarget: { value } }) => {
     this.setState({ searchString: value, show: true });
   }
 
   handleSearchInputUp = (e) => {
     const { keyCode } = e;
-    const allNodes = document.querySelectorAll("[tabIndex].node-container");
+    const allNodes = document.querySelectorAll("div[tabIndex].node-container");
     if (keyCode === 40 && allNodes[0]) {
       allNodes[0].focus();
     }
@@ -210,7 +207,7 @@ export class MultiSelect extends Component {
   handleSearchInputDown = (e) => {
     const { keyCode } = e;
     const { selected, searchString } = this.state;
-    const allNodes = document.querySelectorAll("[tabIndex].node-container");
+    const allNodes = document.querySelectorAll("div[tabIndex].node-container");
     if (keyCode === 13 && allNodes[0]) {
       allNodes[0].focus();
     }
@@ -227,26 +224,18 @@ export class MultiSelect extends Component {
       this.selectData(sel);
       this.setState({ searchString: '' });
     }
-    if (keyCode === 38) {
-      if (prev) {
-        prev.focus();
-      } else {
-        this.focusInput();
-      }
+    if (keyCode === 38 || keyCode === 13) {
+      if (prev) { prev.focus(); }
+      else { this.focusInput(); }
     }
-    if (keyCode === 40 && next) {
-      next.focus();
-    }
+    if (keyCode === 40 && next) { next.focus(); }
   }
 
   render() {
     const {
       toggleMenu, selectData, unSelectData, unSelectAll, filterData,
-      handleSearchInput,
-      //  setWrapperRef,
-      sortData, handleNodeKey,
-      handleSearchInputUp, handleSearchInputDown, validateMessage,
-      setDropdownPosition
+      handleSearchInput, sortData, handleNodeKey, handleSearchInputUp,
+      handleSearchInputDown, validateMessage, setDropdownPosition
     } = this;
     const {
       element, selectedElement, showCross, required, minValues
@@ -312,9 +301,7 @@ export class MultiSelect extends Component {
               onClick={unSelectAll}
             />
             <div className="divider" />
-            <ArrowDown
-              className={`show-dropdown ${show}`}
-            />
+            <ArrowDown className={`show-dropdown ${show}`} />
           </div>
         </div>
         {show && (
