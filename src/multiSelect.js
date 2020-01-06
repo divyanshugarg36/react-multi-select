@@ -26,7 +26,6 @@ export class MultiSelect extends Component {
       unSelected,
       searchString: '',
       searchKey,
-      position: {},
     };
   }
 
@@ -42,7 +41,6 @@ export class MultiSelect extends Component {
 
   componentDidMount() {
     this.setRefAPI();
-    this.setDropdownPosition();
     document.addEventListener('mousedown', this.handleClickOutside);
     document.addEventListener('scroll', () => { this.toggleMenu(false) });
   }
@@ -59,16 +57,23 @@ export class MultiSelect extends Component {
   handleClickOutside = (event) => {
     const { show } = this.state;
     if (this.show && !this.show.contains(event.target) && show) {
-      this.setState({ show: false });
+      this.setState({ show: false, searchString: '' });
     }
   }
 
   setDropdownPosition = () => {
+    const { parentId } = this.props;
     const { innerHeight } = window;
-    const { top, height } = this.show.getBoundingClientRect();
-    const bottomSpace = (top + height - innerHeight) * -1;
-    const position = (bottomSpace > 150) ? { top: 'calc(100% + 1px)' } : { bottom: 'calc(100% + 1px)' };
-    this.setState({ position });
+    const { top, height, bottom: bottomSelect } = this.show.getBoundingClientRect();
+    let parentBottomSpace;
+    if (parentId) {
+      const { bottom: bottomParent } = document.getElementById(parentId).getBoundingClientRect();
+      parentBottomSpace = bottomParent - bottomSelect;
+    }
+    const windowBottomSpace = (top + height - innerHeight) * -1;
+    const position = (windowBottomSpace > 150 || parentBottomSpace > 150)
+      ? { top: 'calc(100% + 1px)' } : { bottom: 'calc(100% + 1px)' };
+    return position;
   }
 
   setRefAPI = () => {
@@ -235,13 +240,14 @@ export class MultiSelect extends Component {
     const {
       toggleMenu, selectData, unSelectData, unSelectAll, filterData,
       handleSearchInput, setWrapperRef, sortData, handleNodeKey,
-      handleSearchInputUp, handleSearchInputDown, validateMessage
+      handleSearchInputUp, handleSearchInputDown, validateMessage,
+      setDropdownPosition
     } = this;
     const {
       element, selectedElement, showCross, required, minValues
     } = this.props;
     const {
-      show, selected, unSelected, searchString, searchKey, position
+      show, selected, unSelected, searchString, searchKey
     } = this.state;
     const typeTestSelected = selectedElement('a') === 'a';
     const typeTestUnSelected = element('a') === 'a';
@@ -307,7 +313,7 @@ export class MultiSelect extends Component {
           </div>
         </div>
         {show && (
-          <div className="multi-select-dropdown" style={position}>
+          <div className="multi-select-dropdown" style={setDropdownPosition()}>
             {(unSelectedLength === 0)
               ? <div className="no-options">No Options!</div>
               : (
@@ -343,6 +349,7 @@ MultiSelect.propTypes = {
   searchKey: PropTypes.string,
   showCross: PropTypes.bool,
   required: PropTypes.bool,
+  parentId: PropTypes.string,
 };
 
 MultiSelect.defaultProps = {
@@ -355,4 +362,5 @@ MultiSelect.defaultProps = {
   minValues: 0,
   showCross: false,
   required: false,
+  parentId: '',
 };
