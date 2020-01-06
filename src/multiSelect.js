@@ -34,6 +34,10 @@ export class MultiSelect extends Component {
   componentDidMount() {
     document.addEventListener('mousedown', this.handleExit);
     document.addEventListener('scroll', this.handleExit);
+  }
+
+  componentDidUpdate() {
+    console.log(this.validate);
     this.setRefAPI();
   }
 
@@ -56,21 +60,6 @@ export class MultiSelect extends Component {
     }
   }
 
-  setDropdownPosition = () => {
-    const { parentId } = this.props;
-    const { innerHeight } = window;
-    const { top, height, bottom: bottomSelect } = this.show.current.getBoundingClientRect();
-    let parentBottomSpace;
-    if (parentId) {
-      const { bottom: bottomParent } = document.getElementById(parentId).getBoundingClientRect();
-      parentBottomSpace = bottomParent - bottomSelect;
-    }
-    const windowBottomSpace = (top + height - innerHeight) * -1;
-    const position = (windowBottomSpace > 150 || parentBottomSpace > 150)
-      ? { top: 'calc(100% + 1px)' } : { bottom: 'calc(100% + 1px)' };
-    return position;
-  }
-
   setRefAPI = () => {
     const { selected } = this.state;
     const { refApi } = this.props || {};
@@ -85,6 +74,21 @@ export class MultiSelect extends Component {
         };
       }
     }
+  }
+
+  setDropdownPosition = () => {
+    const { parentId } = this.props;
+    const { innerHeight } = window;
+    const { top, height, bottom: bottomSelect } = this.show.current.getBoundingClientRect();
+    let parentBottomSpace;
+    if (parentId) {
+      const { bottom: bottomParent } = document.getElementById(parentId).getBoundingClientRect();
+      parentBottomSpace = bottomParent - bottomSelect;
+    }
+    const windowBottomSpace = (top + height - innerHeight) * -1;
+    const position = (windowBottomSpace > 150 || parentBottomSpace > 150)
+      ? { top: 'calc(100% + 1px)' } : { bottom: 'calc(100% + 1px)' };
+    return position;
   }
 
   toggleMenu = (show = true) => {

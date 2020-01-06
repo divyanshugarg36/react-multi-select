@@ -55,7 +55,7 @@ class App extends React.Component {
             // maxValues={1}
             showCross
             onChange={(data) => { console.log(data); }}
-          // required
+            required
           />
           <button type="submit">Hello</button>
         </form>
