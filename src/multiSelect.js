@@ -32,9 +32,9 @@ export class MultiSelect extends Component {
   }
 
   componentDidMount() {
-    this.setRefAPI();
     document.addEventListener('mousedown', this.handleExit);
     document.addEventListener('scroll', this.handleExit);
+    this.setRefAPI();
   }
 
   componentWillUnmount() {
@@ -226,8 +226,7 @@ export class MultiSelect extends Component {
     } = this;
     const { element, selectedElement, showCross, required, minValues } = this.props;
     const { show, selected, unSelected, searchString, searchKey } = this.state;
-    const typeTestSelected = selectedElement('a') === 'a';
-    const typeTestUnSelected = element('a') === 'a';
+    const typeTest = !(selectedElement('a') === 'a') || !(element('a') === 'a');
     const filteredUnSelected = filterData(sortData(unSelected), searchString, searchKey);
     const inputSize = searchString.length === 0 ? 1 : searchString.length;
     const validate = ((required || minValues > 0) && !(minValues - 1 < selected.length));
@@ -250,8 +249,7 @@ export class MultiSelect extends Component {
             {selected.map((sel, index) => (
               <div
                 key={index}
-                className={`node-container ${(!typeTestUnSelected || !typeTestSelected)
-                  ? 'node-container-external' : ''}`}
+                className={`node-container ${(typeTest) ? 'node-container-external' : ''}`}
                 onClick={(e) => {
                   unSelectData(index);
                   e.stopPropagation();
