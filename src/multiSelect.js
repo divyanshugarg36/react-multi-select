@@ -49,6 +49,7 @@ export class MultiSelect extends Component {
 
   componentWillUnmount() {
     document.removeEventListener('mousedown', this.handleClickOutside);
+    document.removeEventListener('scroll', () => { this.toggleMenu(false) });
   }
 
   setWrapperRef = (node) => {
@@ -65,9 +66,8 @@ export class MultiSelect extends Component {
   setDropdownPosition = () => {
     const { innerHeight } = window;
     const { top, height } = this.show.getBoundingClientRect();
-    let position;
     const bottomSpace = (top + height - innerHeight) * -1;
-    position = (bottomSpace > 150) ? { top: "calc(100% + 1px)" } : { bottom: "calc(100% + 1px)" };
+    const position = (bottomSpace > 150) ? { top: 'calc(100% + 1px)' } : { bottom: 'calc(100% + 1px)' };
     this.setState({ position });
   }
 
