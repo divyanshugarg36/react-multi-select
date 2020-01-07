@@ -1,0 +1,34 @@
+.globe {
+  width: fit-content;
+  max-width: 250px;
+  display: flex;
+  height: @rhythm*1.5;
+  border-radius: @rhythm*5;
+  border: 1px solid @color-light;
+  align-items: center;
+  padding: 1px @rhythm/2 1px 1px;
+  white-space: nowrap;
+
+  &.margin {
+    margin: @rhythm/4 0;
+  }
+
+  .image {
+    height: @rhythm*1.5;
+    width: @rhythm*1.5;
+    min-height: @rhythm*1.5;
+    min-width: @rhythm*1.5;
+    background-size: cover;
+    background-position: center center;
+    border-radius: @rhythm*6;
+    margin-right: 3px;
+  }
+
+  .label {
+    color: @color-medium;
+    font-size: @rhythm;
+    line-height: @rhythm*2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

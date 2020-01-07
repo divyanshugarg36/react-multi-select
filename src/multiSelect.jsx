@@ -28,11 +28,11 @@ export class MultiSelect extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { data } = nextProps;
+    const { data, defaultData } = nextProps;
     const { selected } = prevState;
     if (!isEqual(data, prevState.data)) {
       const unSelected = data.filter((el) => !selected.includes(el));
-      return { unSelected };
+      return { unSelected, selected: defaultData };
     }
     return null;
   }
@@ -287,7 +287,7 @@ export class MultiSelect extends Component {
             <input
               className="search-value"
               ref={this.searchValue}
-              onFocus={validateMessage && toggleMenu}
+              onFocus={validateMessage}
               onChange={handleSearchInput}
               onKeyUp={handleSearchInputUp}
               onKeyDown={handleSearchInputDown}

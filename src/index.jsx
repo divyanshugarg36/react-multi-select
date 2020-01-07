@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { MultiSelect } from './multiSelect';
+import { GlobeLabel } from './globeLabel';
 
 // const DATA = [
 //   { name: 'Fish', values: 'gish' },
@@ -29,10 +30,12 @@ export class App extends React.Component {
     this.testSelect = React.createRef();
   }
 
-  componentDidMount() {
+  getData = () => {
     axios.get('https://restcountries.eu/rest/v2/all')
-      .then((response) => {
-        this.setState({ countries: response.data });
+      .then(({ data }) => {
+        this.setState({ countries: data, defaultCountries: [data[10], data[55]] });
+        console.log('Data Added');
+        console.log(data);
       });
   }
 
@@ -43,24 +46,37 @@ export class App extends React.Component {
   }
 
   render() {
-    const { countries } = this.state;
+    const { countries, defaultCountries } = this.state;
     return (
       <div className="App">
         <form onSubmit={this.sub}>
-          <MultiSelect
-            refApi={this.testSelect}
-            data={countries}
-            // defaultData={[DATA[0], DATA[1]]}
-            // element={(str) => `${str.name}.`}
-            // selectedElement={(str) => `${str.name}.`}
-            searchKey="name"
-            minValues={2}
-            // maxValues={1}
-            showCross
-            // onChange={(data) => { console.log(data); }}
-            required
-          />
-          <button type="submit">Hello</button>
+          <div className="flex">
+            <MultiSelect
+              refApi={this.testSelect}
+              data={countries}
+              defaultData={defaultCountries}
+              searchKey="name"
+              minValues={2}
+              showCross
+              onChange={(data) => { console.log('Data onChange', data); }}
+              required
+            />
+            <MultiSelect
+              refApi={this.testSelect}
+              data={countries}
+              defaultData={defaultCountries}
+              selectedElement={({ name, flag }) => <GlobeLabel label={name} image={flag} />}
+              element={({ name, flag }) => <GlobeLabel label={name} image={flag} margin />}
+              searchKey="name"
+              maxValues={3}
+              required
+            />
+          </div>
+          <div className="flex">
+            <button type="submit">Submit</button>
+            {countries.length === 0
+              && <button type="button" onClick={this.getData}>Add Data</button>}
+          </div>
         </form>
       </div>
     );

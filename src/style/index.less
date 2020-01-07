@@ -1,5 +1,6 @@
 @import (css) url('https://fonts.googleapis.com/css?family=Nunito+Sans:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&display=swap');
 @import './multiSelect.less';
+@import './globe.less';
 
 @font-nunito: 'Nunito Sans', sans-serif;
 
@@ -8,7 +9,7 @@
 @color-light: #999;
 
 @white: #fff;
-@blue: #0d5bc6;
+@blue: #006aff;
 
 @light-background: #f3f3f3;
 @medium-background: #f6f6f6;
@@ -31,6 +32,34 @@ body {
   justify-content: center;
   font-family: @font-nunito;
   font-size: calc(10px + 2vmin);
+
+  button {
+    all: unset;
+    height: @rhythm*4;
+    border-radius: @rhythm;
+    background: @white;
+    color: @color-medium;
+    padding: 0 @rhythm;
+    margin: @rhythm;
+    transition: 0.2s;
+    border: 1px solid transparent;
+
+    &:hover {
+      cursor: pointer;
+      color: @white;
+      background: @blue;
+      border: 1px solid;
+    }
+  }
+
+  .flex {
+    display: flex;
+    justify-content: space-between;
+
+    .multi-select {
+      margin: 0 @rhythm;
+    }
+  }
 }
 
 .scroll-bar() {
