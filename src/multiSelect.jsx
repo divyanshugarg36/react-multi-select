@@ -278,7 +278,7 @@ export class MultiSelect extends Component {
             <input
               className="search-value"
               ref={this.searchValue}
-              onFocus={validateMessage}
+              onFocus={validateMessage && toggleMenu}
               onChange={handleSearchInput}
               onKeyUp={handleSearchInputUp}
               onKeyDown={handleSearchInputDown}
