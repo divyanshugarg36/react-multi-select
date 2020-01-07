@@ -57,6 +57,7 @@ export class App extends React.Component {
               defaultData={defaultCountries}
               searchKey="name"
               minValues={2}
+              maxValues={3}
               showCross
               onChange={(data) => { console.log('Data onChange', data); }}
               required
@@ -68,7 +69,6 @@ export class App extends React.Component {
               selectedElement={({ name, flag }) => <GlobeLabel label={name} image={flag} />}
               element={({ name, flag }) => <GlobeLabel label={name} image={flag} margin />}
               searchKey="name"
-              maxValues={3}
               required
             />
           </div>
