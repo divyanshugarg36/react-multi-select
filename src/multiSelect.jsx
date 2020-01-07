@@ -115,7 +115,7 @@ export class MultiSelect extends Component {
       try {
         this.validate.current.setCustomValidity(string);
       } catch {
-        console.log();
+        this.focusInput();
       }
     }
   }
@@ -218,12 +218,20 @@ export class MultiSelect extends Component {
     const next = currentTarget.nextSibling;
     if (keyCode === 13) {
       this.selectData(sel);
+      this.focusInput();
       this.setState({ searchString: '' });
     }
-    if (keyCode === 38 || keyCode === 13) {
+    if (keyCode === 38) {
       if (prev) { prev.focus(); } else { this.focusInput(); }
     }
     if (keyCode === 40 && next) { next.focus(); }
+  }
+
+  stopScroll = (e) => {
+    const { keyCode } = e;
+    if (keyCode === 40 || keyCode === 38) {
+      e.preventDefault();
+    }
   }
 
   render() {
@@ -231,6 +239,7 @@ export class MultiSelect extends Component {
       toggleMenu, selectData, unSelectData, unSelectAll, filterData,
       handleSearchInput, sortData, handleNodeKey, handleSearchInputUp,
       handleSearchInputDown, validateMessage, setDropdownPosition,
+      stopScroll,
     } = this;
     const {
       element, selectedElement, showCross, required, minValues,
@@ -307,6 +316,7 @@ export class MultiSelect extends Component {
                       key={index}
                       tabIndex={0}
                       onKeyUp={(e) => handleNodeKey(e, sel)}
+                      onKeyDown={stopScroll}
                       className="node-container"
                       onClick={() => selectData(sel)}
                     >
