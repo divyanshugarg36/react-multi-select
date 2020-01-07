@@ -21,17 +21,18 @@ const DATA = [
 //   'Dog',
 // ];
 
-class App extends React.Component {
+export class App extends React.Component {
   constructor() {
     super();
     this.state = {};
     this.testSelect = React.createRef();
   }
+
   componentDidMount() {
     const multi = this.testSelect.current;
     setInterval(() => {
       console.log(multi);
-    }, 1000)
+    }, 1000);
   }
 
   sub = (e) => {
@@ -41,7 +42,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App" >
+      <div className="App">
         <form onSubmit={this.sub}>
           <MultiSelect
             refApi={this.testSelect}
@@ -62,5 +63,3 @@ class App extends React.Component {
     );
   }
 }
-
-export default App;

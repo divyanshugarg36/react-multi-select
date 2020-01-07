@@ -1,3 +1,7 @@
+/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -7,10 +11,12 @@ import { ArrowDown, CloseIcon } from './icons';
 export class MultiSelect extends Component {
   constructor(props) {
     super(props);
-    const { data, defaultData, searchKey: sKey, maxValues } = props;
+    const {
+      data, defaultData, searchKey: sKey, maxValues,
+    } = props;
     const selected = (defaultData.length > maxValues) && (maxValues !== 0)
       ? [defaultData[0]] : defaultData;
-    const unSelected = data.filter(el => !selected.includes(el));
+    const unSelected = data.filter((el) => !selected.includes(el));
     const searchKey = (typeof unSelected[0] === 'string')
       ? undefined : (sKey || keys(unSelected[0])[0]);
     this.state = {
@@ -25,7 +31,7 @@ export class MultiSelect extends Component {
     const { data } = nextProps;
     const { selected } = prevState;
     if (!isEqual(data, prevState.data)) {
-      const unSelected = data.filter(el => !selected.includes(el));
+      const unSelected = data.filter((el) => !selected.includes(el));
       return { unSelected };
     }
     return null;
@@ -69,7 +75,7 @@ export class MultiSelect extends Component {
         show: this.toggleMenu,
         focus: this.focusInput,
         value: selected,
-      }
+      };
     }
   }
 
@@ -104,11 +110,13 @@ export class MultiSelect extends Component {
     const { selected } = this.state;
     if (current) {
       const string = selected.length === 0
-        ? "Please select the data."
+        ? 'Please select the data.'
         : `Please select at least ${minValues} values.`;
       try {
         this.validate.current.setCustomValidity(string);
-      } catch{ }
+      } catch {
+        console.log();
+      }
     }
   }
 
@@ -116,7 +124,7 @@ export class MultiSelect extends Component {
     const { maxValues, onChange } = this.props;
     const { selected, unSelected } = this.state;
     if (maxValues > selected.length || maxValues === 0) {
-      const index = unSelected.findIndex(x => isEqual(x, select));
+      const index = unSelected.findIndex((x) => isEqual(x, select));
       selected.push(...unSelected.splice(index, 1));
       this.setState({
         selected,
@@ -138,8 +146,8 @@ export class MultiSelect extends Component {
           unSelected,
           show: true,
           searchString: '',
-        }
-      }
+        };
+      },
     );
     this.focusInput();
   }
@@ -177,7 +185,7 @@ export class MultiSelect extends Component {
         { [searchKey]: label },
       ) => (label.toLowerCase().indexOf(searchString.toLowerCase()) > -1));
     }
-    return data.filter(str => (str.toLowerCase().indexOf(searchString.toLowerCase()) > -1));
+    return data.filter((str) => (str.toLowerCase().indexOf(searchString.toLowerCase()) > -1));
   }
 
   handleSearchInput = ({ currentTarget: { value } }) => {
@@ -186,7 +194,7 @@ export class MultiSelect extends Component {
 
   handleSearchInputUp = (e) => {
     const { keyCode } = e;
-    const allNodes = document.querySelectorAll("div[tabIndex].node-container");
+    const allNodes = document.querySelectorAll('div[tabIndex].node-container');
     if (keyCode === 40 && allNodes[0]) {
       allNodes[0].focus();
     }
@@ -195,7 +203,7 @@ export class MultiSelect extends Component {
   handleSearchInputDown = (e) => {
     const { keyCode } = e;
     const { selected, searchString } = this.state;
-    const allNodes = document.querySelectorAll("div[tabIndex].node-container");
+    const allNodes = document.querySelectorAll('div[tabIndex].node-container');
     if (keyCode === 13 && allNodes[0]) {
       allNodes[0].focus();
     }
@@ -213,8 +221,7 @@ export class MultiSelect extends Component {
       this.setState({ searchString: '' });
     }
     if (keyCode === 38 || keyCode === 13) {
-      if (prev) { prev.focus(); }
-      else { this.focusInput(); }
+      if (prev) { prev.focus(); } else { this.focusInput(); }
     }
     if (keyCode === 40 && next) { next.focus(); }
   }
@@ -223,10 +230,14 @@ export class MultiSelect extends Component {
     const {
       toggleMenu, selectData, unSelectData, unSelectAll, filterData,
       handleSearchInput, sortData, handleNodeKey, handleSearchInputUp,
-      handleSearchInputDown, validateMessage, setDropdownPosition
+      handleSearchInputDown, validateMessage, setDropdownPosition,
     } = this;
-    const { element, selectedElement, showCross, required, minValues } = this.props;
-    const { show, selected, unSelected, searchString, searchKey } = this.state;
+    const {
+      element, selectedElement, showCross, required, minValues,
+    } = this.props;
+    const {
+      show, selected, unSelected, searchString, searchKey,
+    } = this.state;
     const typeTest = selectedElement('a') !== 'a' || element('a') !== 'a';
     const filteredUnSelected = filterData(sortData(unSelected), searchString, searchKey);
     const inputSize = searchString.length === 0 ? 1 : searchString.length;
@@ -236,12 +247,14 @@ export class MultiSelect extends Component {
         className={`multi-select ${show}`}
         ref={this.show}
       >
-        {validate && <input
-          ref={this.validate}
-          className="validation-input"
-          required
-          onFocus={this.focusInput}
-        />}
+        {validate && (
+          <input
+            ref={this.validate}
+            className="validation-input"
+            required
+            onFocus={this.focusInput}
+          />
+        )}
         <div
           className="multi-select-content"
           onClick={() => toggleMenu(!show)}
@@ -256,7 +269,7 @@ export class MultiSelect extends Component {
                   e.stopPropagation();
                 }}
               >
-                <div className='node'>
+                <div className="node">
                   {selectedElement(sel, searchKey)}
                 </div>
                 {showCross && <CloseIcon className="remove-node" />}
