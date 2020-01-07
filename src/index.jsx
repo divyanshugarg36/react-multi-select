@@ -52,8 +52,8 @@ export class App extends React.Component {
         <form onSubmit={this.sub}>
           <div className="flex">
             <MultiSelect
-              refApi={this.testSelect}
-              data={countries}
+              // refApi={this.testSelect}
+              data={[countries]}
               defaultData={defaultCountries}
               searchKey="name"
               minValues={2}
