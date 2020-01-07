@@ -68,6 +68,7 @@ export class App extends React.Component {
               selectedElement={({ name, flag }) => <GlobeLabel label={name} image={flag} />}
               element={({ name, flag }) => <GlobeLabel label={name} image={flag} margin />}
               searchKey="name"
+              maxValues={3}
               required
             />
           </div>

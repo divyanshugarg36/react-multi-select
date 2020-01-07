@@ -122,16 +122,18 @@ export class MultiSelect extends Component {
 
   selectData = (select) => {
     const { maxValues, onChange } = this.props;
-    const { selected, unSelected } = this.state;
-    if (maxValues > selected.length || maxValues === 0) {
-      const index = unSelected.findIndex((x) => isEqual(x, select));
-      selected.push(...unSelected.splice(index, 1));
-      this.setState({
-        selected,
-        unSelected,
-      });
-    }
-    onChange(selected);
+    this.setState(({ selected, unSelected }) => {
+      if (maxValues > selected.length || maxValues === 0) {
+        const index = unSelected.findIndex((x) => isEqual(x, select));
+        selected.push(...unSelected.splice(index, 1));
+        onChange(selected);
+        return {
+          selected,
+          unSelected,
+        };
+      }
+      return {};
+    });
     this.focusInput();
   }
 
