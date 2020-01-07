@@ -212,14 +212,12 @@ export class MultiSelect extends Component {
     }
   }
 
-  handleNodeKey = (e, sel) => {
+  handleNodeKeyDown = (e) => {
     const { keyCode, currentTarget } = e;
     const prev = currentTarget.previousSibling;
     const next = currentTarget.nextSibling;
-    if (keyCode === 13) {
-      this.selectData(sel);
-      this.focusInput();
-      this.setState({ searchString: '' });
+    if (keyCode === 40 || keyCode === 38) {
+      e.preventDefault();
     }
     if (keyCode === 38) {
       if (prev) { prev.focus(); } else { this.focusInput(); }
@@ -227,19 +225,21 @@ export class MultiSelect extends Component {
     if (keyCode === 40 && next) { next.focus(); }
   }
 
-  stopScroll = (e) => {
+  handleNodeKeyUp = (e, sel) => {
     const { keyCode } = e;
-    if (keyCode === 40 || keyCode === 38) {
-      e.preventDefault();
+    if (keyCode === 13) {
+      this.selectData(sel);
+      this.focusInput();
+      this.setState({ searchString: '' });
     }
   }
 
   render() {
     const {
       toggleMenu, selectData, unSelectData, unSelectAll, filterData,
-      handleSearchInput, sortData, handleNodeKey, handleSearchInputUp,
-      handleSearchInputDown, validateMessage, setDropdownPosition,
-      stopScroll,
+      handleSearchInput, sortData, handleNodeKeyUp, handleNodeKeyDown,
+      handleSearchInputUp, handleSearchInputDown, validateMessage,
+      setDropdownPosition,
     } = this;
     const {
       element, selectedElement, showCross, required, minValues,
@@ -315,8 +315,8 @@ export class MultiSelect extends Component {
                     <div
                       key={index}
                       tabIndex={0}
-                      onKeyUp={(e) => handleNodeKey(e, sel)}
-                      onKeyDown={stopScroll}
+                      onKeyDownCapture={handleNodeKeyDown}
+                      onKeyUp={(e) => handleNodeKeyUp(e, sel)}
                       className="node-container"
                       onClick={() => selectData(sel)}
                     >
