@@ -18,8 +18,8 @@ export class GlobeLabel extends Component {
 GlobeLabel.propTypes = {
   label: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
-  margin: PropTypes.string,
+  margin: PropTypes.bool,
 };
 GlobeLabel.defaultProps = {
-  margin: '',
+  margin: false,
 };

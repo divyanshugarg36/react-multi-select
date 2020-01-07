@@ -53,7 +53,7 @@ export class App extends React.Component {
           <div className="flex">
             <MultiSelect
               // refApi={this.testSelect}
-              data={[countries]}
+              data={countries}
               defaultData={defaultCountries}
               searchKey="name"
               minValues={2}
