@@ -30,9 +30,10 @@ export class MultiSelect extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const { data, defaultData } = nextProps;
     const { selected } = prevState;
+    const resSelected = (defaultData && defaultData[0]) ? defaultData : selected;
     if (!isEqual(data, prevState.data)) {
-      const unSelected = data.filter((el) => !selected.includes(el));
-      return { unSelected: [...unSelected], selected: defaultData };
+      const unSelected = data.filter((el) => !resSelected.includes(el));
+      return { unSelected: [...unSelected], selected: resSelected };
     }
     return null;
   }
