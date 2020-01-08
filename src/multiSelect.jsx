@@ -192,7 +192,11 @@ export class MultiSelect extends Component {
   }
 
   handleSearchInput = ({ currentTarget: { value } }) => {
-    this.setState({ searchString: value.trimStart(), show: true });
+    const { selected } = this.state;
+    const { maxValues } = this.props;
+    if (maxValues > selected.length || maxValues === 0) {
+      this.setState({ searchString: value.trimStart(), show: true });
+    }
   }
 
   handleSearchInputUp = (e) => {

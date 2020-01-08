@@ -41,7 +41,7 @@ export class App extends React.Component {
       });
     axios.get('https://reqres.in/api/users')
       .then(({ data }) => {
-        this.setState({ emp: data.data, defaultEmp: [data[1], data[2]] });
+        this.setState({ emp: data.data, defaultEmp: [data.data[1], data.data[2]] });
         console.log('Data Added');
       });
   }
