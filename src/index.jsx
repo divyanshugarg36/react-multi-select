@@ -26,7 +26,10 @@ import { GlobeLabel } from './globeLabel';
 export class App extends React.Component {
   constructor() {
     super();
-    this.state = { countries: [] };
+    this.state = {
+      countries: [],
+      emp: [],
+    };
     this.testSelect = React.createRef();
   }
 
@@ -35,7 +38,11 @@ export class App extends React.Component {
       .then(({ data }) => {
         this.setState({ countries: data, defaultCountries: [data[10], data[55]] });
         console.log('Data Added');
-        console.log(data);
+      });
+    axios.get('https://reqres.in/api/users')
+      .then(({ data }) => {
+        this.setState({ emp: data.data, defaultEmp: [data.data[1], data.data[2]] });
+        console.log('Data Added');
       });
   }
 
@@ -46,16 +53,18 @@ export class App extends React.Component {
   }
 
   render() {
-    const { countries, defaultCountries } = this.state;
+    const {
+      countries, defaultCountries, emp, defaultEmp,
+    } = this.state;
     return (
       <div className="App">
         <form onSubmit={this.sub}>
           <div className="flex">
             <MultiSelect
               // refApi={this.testSelect}
-              data={countries}
-              defaultData={defaultCountries}
-              searchKey="name"
+              data={emp}
+              defaultData={defaultEmp}
+              searchKey="first_name"
               minValues={2}
               maxValues={3}
               showCross
@@ -63,7 +72,7 @@ export class App extends React.Component {
               required
             />
             <MultiSelect
-              refApi={this.testSelect}
+              // refApi={this.testSelect}
               data={countries}
               defaultData={defaultCountries}
               selectedElement={({ name, flag }) => <GlobeLabel label={name} image={flag} />}

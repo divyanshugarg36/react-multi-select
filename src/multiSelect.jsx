@@ -32,7 +32,7 @@ export class MultiSelect extends Component {
     const { selected } = prevState;
     if (!isEqual(data, prevState.data)) {
       const unSelected = data.filter((el) => !selected.includes(el));
-      return { unSelected, selected: defaultData };
+      return { unSelected: [...unSelected], selected: defaultData };
     }
     return null;
   }
