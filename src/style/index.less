@@ -22,46 +22,6 @@
 @mobile: 550px;
 @tablet-medium: 906px;
 
-body {
-  margin: 0;
-  background-color: #0055ff;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: @font-nunito;
-  font-size: calc(10px + 2vmin);
-
-  button {
-    all: unset;
-    height: @rhythm*4;
-    border-radius: @rhythm;
-    background: @white;
-    color: @color-medium;
-    padding: 0 @rhythm;
-    margin: @rhythm;
-    transition: 0.2s;
-    border: 1px solid transparent;
-
-    &:hover {
-      cursor: pointer;
-      color: @white;
-      background: @blue;
-      border: 1px solid;
-    }
-  }
-
-  .flex {
-    display: flex;
-    justify-content: space-between;
-
-    .multi-select {
-      margin: 0 @rhythm;
-    }
-  }
-}
-
 .scroll-bar() {
   &::-webkit-scrollbar {
     width: 6px;

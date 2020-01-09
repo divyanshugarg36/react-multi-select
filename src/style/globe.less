@@ -1,34 +1,74 @@
-.globe {
-  width: fit-content;
-  max-width: 250px;
+body {
+  margin: 0;
+  background-color: #0055ff;
+  min-height: 100vh;
   display: flex;
-  height: @rhythm*1.5;
-  border-radius: @rhythm*5;
-  border: 1px solid @color-light;
+  flex-direction: column;
   align-items: center;
-  padding: 1px @rhythm/2 1px 1px;
-  white-space: nowrap;
+  justify-content: center;
+  font-family: @font-nunito;
+  font-size: calc(10px + 2vmin);
 
-  &.margin {
-    margin: @rhythm/4 0;
-  }
-
-  .image {
-    height: @rhythm*1.5;
-    width: @rhythm*1.5;
-    min-height: @rhythm*1.5;
-    min-width: @rhythm*1.5;
-    background-size: cover;
-    background-position: center center;
-    border-radius: @rhythm*6;
-    margin-right: 3px;
-  }
-
-  .label {
+  button {
+    all: unset;
+    height: @rhythm*4;
+    border-radius: @rhythm;
+    background: @white;
     color: @color-medium;
-    font-size: @rhythm;
-    line-height: @rhythm*2;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    padding: 0 @rhythm;
+    margin: @rhythm;
+    transition: 0.2s;
+    border: 1px solid transparent;
+
+    &:hover {
+      cursor: pointer;
+      color: @white;
+      background: @blue;
+      border: 1px solid;
+    }
+  }
+
+  .flex {
+    display: flex;
+    justify-content: space-between;
+
+    .multi-select {
+      margin: 0 @rhythm;
+    }
+  }
+
+  .globe {
+    width: fit-content;
+    max-width: 250px;
+    display: flex;
+    height: @rhythm*1.5;
+    border-radius: @rhythm*5;
+    border: 1px solid @color-light;
+    align-items: center;
+    padding: 1px @rhythm/2 1px 1px;
+    white-space: nowrap;
+
+    &.margin {
+      margin: @rhythm/4 0;
+    }
+
+    .image {
+      height: @rhythm*1.5;
+      width: @rhythm*1.5;
+      min-height: @rhythm*1.5;
+      min-width: @rhythm*1.5;
+      background-size: cover;
+      background-position: center center;
+      border-radius: @rhythm*6;
+      margin-right: 3px;
+    }
+
+    .label {
+      color: @color-medium;
+      font-size: @rhythm;
+      line-height: @rhythm*2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 }

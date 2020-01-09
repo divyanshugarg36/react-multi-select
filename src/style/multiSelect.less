@@ -7,7 +7,8 @@
   max-width: 372px;
   background: @medium-background;
   font-size: 18px;
-  border-radius: @rhythm/2;
+  font-family: @font-nunito;
+  border-radius: @rhythm*0.5;
   border: 1px solid transparent;
 
   @media only screen and (max-width: @tablet-medium) {
@@ -65,8 +66,8 @@
         color: @color-medium;
         user-select: none;
         cursor: pointer;
-        margin: @rhythm/4;
-        border-radius: @rhythm/4;
+        margin: @rhythm*0.25;
+        border-radius: @rhythm*0.25;
         border: 1px solid @color-light;
         background: white;
 
@@ -76,13 +77,13 @@
         }
 
         .node {
-          padding-left: @rhythm/4;
+          padding-left: @rhythm*0.25;
         }
 
         .remove-node {
           height: 10px;
           width: 10px;
-          padding: 0 @rhythm/4;
+          padding: 0 @rhythm*0.25;
           fill: @color-medium;
         }
       }
