@@ -1,1 +1,3 @@
-export { default as MultiSelect } from './components/multiSelect';
+import MultiSelect from './components/multiSelect';
+
+export default MultiSelect;

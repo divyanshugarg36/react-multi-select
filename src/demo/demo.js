@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import axios from 'axios';
-import { MultiSelect } from '../lib';
+import MultiSelect from '../lib';
 import { GlobeLabel } from './globeLabel';
 
 // const DATA = [
