@@ -1,26 +1,38 @@
-# Boilerplate with ReactJs + ParcelJs + Eslint +Less + Babel
+This project was bootstrapped with [Create React Library](https://github.com/dimimikadze/create-react-library).
 
-This is a boilerplate with the above technologies. No Need to setup while creating a new project.
+All library files are located inside **src/lib** folder.
 
+Inside **src/demo** folder, you can test your library while developing.
 
-## Installation
+## Available Scripts
 
-Use the package manager npm to install Boilerplate.
+In the project directory, you can run:
 
-```bash
-npm install 
-```
+### `npm start` or `yarn start`
 
-## Start Server
+Runs the library in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-```bash
-npm start
- ```
+### `npm run test` or `yarn run test`
 
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Runs the test watcher in an interactive mode.
 
-Please make sure to update tests as appropriate.
+### `npm run build` or `yarn build`
 
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
+Builds the library for production to the `build` folder.
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+### `npm publish`
+
+Publishes the library to NPM.
+
+## Typescript
+
+[Adding Typescript support](https://gist.github.com/DimiMikadze/f25e1c5c70fa003953afd40fa9042517)
+
+## Troubleshooting
+
+### Usage of other libraries within your library
+
+- Add the library as a peer dependency in package.json (effectively requiring the calling project to provide this dependency)
+- Add the library as a dev dependency in package.json (effectively allowing this library to successfully build without complaining about not having this dependency)
+- Add the library to the externals config in your webpack.config file(s). By default, only react and react-dom are there, meaning that those are the only two libraries that you can use within your new shared library.

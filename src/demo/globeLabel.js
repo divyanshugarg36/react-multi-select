@@ -16,10 +16,12 @@ export class GlobeLabel extends Component {
 }
 
 GlobeLabel.propTypes = {
-  label: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  image: PropTypes.string,
   margin: PropTypes.bool,
 };
 GlobeLabel.defaultProps = {
+  label: '',
+  image: '',
   margin: false,
 };

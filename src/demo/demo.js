@@ -1,6 +1,7 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import axios from 'axios';
-import { MultiSelect } from './multiSelect';
+import { MultiSelect } from '../lib';
 import { GlobeLabel } from './globeLabel';
 
 // const DATA = [
@@ -23,7 +24,7 @@ import { GlobeLabel } from './globeLabel';
 //   'Dog',
 // ];
 
-export class App extends React.Component {
+export default class Demo extends React.Component {
   constructor() {
     super();
     this.state = {

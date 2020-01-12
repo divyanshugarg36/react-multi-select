@@ -1,14 +1,14 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import './style/index.less';
 
 import { isEqual, keys } from 'lodash';
 import { ArrowDown, CloseIcon } from './icons';
 
-export class MultiSelect extends Component {
+export default class MultiSelect extends Component {
   constructor(props) {
     super(props);
     const {
